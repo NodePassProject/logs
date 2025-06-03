@@ -18,7 +18,7 @@ const (
 	Info                  // 信息级别
 	Warn                  // 警告级别
 	Error                 // 错误级别
-	Fatal                 // 致命错误级别
+	Event                 // 事件级别
 )
 
 // levelStrings 将日志级别映射到对应的字符串表示
@@ -27,7 +27,7 @@ var levelStrings = map[LogLevel]string{
 	Info:  "INFO",
 	Warn:  "WARN",
 	Error: "ERROR",
-	Fatal: "FATAL",
+	Event: "EVENT",
 }
 
 // ANSI转义序列，用于控制终端输出的颜色
@@ -36,7 +36,7 @@ const (
 	ansiGreen  = "\033[32m" // 绿色
 	ansiYellow = "\033[33m" // 黄色
 	ansiRed    = "\033[31m" // 红色
-	ansiPurple = "\033[35m" // 紫色
+	ansiCyan   = "\033[36m" // 青色
 	resetColor = "\033[0m"  // 重置颜色
 )
 
@@ -46,7 +46,7 @@ var levelColors = map[LogLevel]string{
 	Info:  ansiGreen,
 	Warn:  ansiYellow,
 	Error: ansiRed,
-	Fatal: ansiPurple,
+	Event: ansiCyan,
 }
 
 // Logger 是自定义的日志记录器结构体
@@ -75,7 +75,7 @@ func (a *logAdapter) Write(p []byte) (n int, err error) {
 
 // NewLogger 创建并返回一个新的Logger实例
 func NewLogger(logLevel LogLevel, enableColor bool) *Logger {
-	if logLevel < Debug || logLevel > Fatal {
+	if logLevel < Debug || logLevel > Event {
 		logLevel = Info
 	}
 	return &Logger{
@@ -113,7 +113,7 @@ func (l *Logger) EnableColor(enable bool) {
 
 // log 是内部日志记录函数，处理通用的日志记录逻辑
 func (l *Logger) log(logLevel LogLevel, format string, v ...any) {
-	if logLevel < Debug || logLevel > Fatal {
+	if logLevel < Debug || logLevel > Event {
 		logLevel = Info
 	}
 	if logLevel < l.minLogLevel {
@@ -159,7 +159,7 @@ func (l *Logger) Error(format string, v ...any) {
 	l.log(Error, format, v...)
 }
 
-// Fatal 输出致命错误级别的日志
-func (l *Logger) Fatal(format string, v ...any) {
-	l.log(Fatal, format, v...)
+// Event 输出事件级别的日志
+func (l *Logger) Event(format string, v ...any) {
+	l.log(Event, format, v...)
 }

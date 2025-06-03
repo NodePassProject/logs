@@ -8,7 +8,7 @@ A simple, flexible, and thread-safe logging system for Go applications.
 ## Features
 
 - Thread-safe logging with mutex protection
-- Multiple log levels (Debug, Info, Warn, Error, Fatal)
+- Multiple log levels (Debug, Info, Warn, Error, Event)
 - Customizable minimum log level
 - Colored terminal output (optional)
 - Custom timestamp formatting
@@ -40,7 +40,7 @@ func main() {
     logger.Info("System started successfully")
     logger.Warn("Configuration file not found, using defaults")
     logger.Error("Failed to connect to database: %s", "connection timeout")
-    logger.Fatal("Critical error: application cannot continue")
+    logger.Event("System event: application state changed")
 }
 ```
 
@@ -82,4 +82,4 @@ stdLogger.Printf("Formatted %s", "message")
 ## License
 
 Copyright (c) 2025, NodePassProject. Licensed under the BSD 3-Clause License.
-See the [LICENCE](./LICENCE) file for details.
+See the [LICENCE](LICENCE) file for details.
