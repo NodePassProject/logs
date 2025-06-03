@@ -82,4 +82,4 @@ stdLogger.Printf("Formatted %s", "message")
 ## License
 
 Copyright (c) 2025, NodePassProject. Licensed under the BSD 3-Clause License.
-See the [LICENCE](LICENCE) file for details.
+See the [LICENSE](LICENSE) file for details.
