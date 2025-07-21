@@ -14,7 +14,8 @@ type LogLevel int
 
 // 定义不同的日志级别常量
 const (
-	Debug LogLevel = iota // 调试级别
+	None  LogLevel = iota // 无日志输出
+	Debug                 // 调试级别
 	Info                  // 信息级别
 	Warn                  // 警告级别
 	Error                 // 错误级别
@@ -23,6 +24,7 @@ const (
 
 // levelStrings 将日志级别映射到对应的字符串表示
 var levelStrings = map[LogLevel]string{
+	None:  "NONE",
 	Debug: "DEBUG",
 	Info:  "INFO",
 	Warn:  "WARN",
@@ -42,6 +44,7 @@ const (
 
 // levelColors 将日志级别映射到对应的ANSI颜色代码
 var levelColors = map[LogLevel]string{
+	None:  "",
 	Debug: ansiBlue,
 	Info:  ansiGreen,
 	Warn:  ansiYellow,
@@ -75,7 +78,7 @@ func (a *logAdapter) Write(p []byte) (n int, err error) {
 
 // NewLogger 创建并返回一个新的Logger实例
 func NewLogger(logLevel LogLevel, enableColor bool) *Logger {
-	if logLevel < Debug || logLevel > Event {
+	if logLevel < None || logLevel > Event {
 		logLevel = Info
 	}
 	return &Logger{
@@ -113,8 +116,11 @@ func (l *Logger) EnableColor(enable bool) {
 
 // log 是内部日志记录函数，处理通用的日志记录逻辑
 func (l *Logger) log(logLevel LogLevel, format string, v ...any) {
-	if logLevel < Debug || logLevel > Event {
+	if logLevel < None || logLevel > Event {
 		logLevel = Info
+	}
+	if l.minLogLevel == None {
+		return
 	}
 	if logLevel < l.minLogLevel {
 		return

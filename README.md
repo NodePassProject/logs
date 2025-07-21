@@ -8,7 +8,7 @@ A simple, flexible, and thread-safe logging system for Go applications.
 ## Features
 
 - Thread-safe logging with mutex protection
-- Multiple log levels (Debug, Info, Warn, Error, Event)
+- Multiple log levels (None, Debug, Info, Warn, Error, Event)
 - Customizable minimum log level
 - Colored terminal output (optional)
 - Custom timestamp formatting
@@ -34,7 +34,11 @@ import (
 func main() {
     // Create a new logger with INFO minimum level and color enabled
     logger := logs.NewLogger(logs.Info, true)
-    
+
+    // Create a logger that disables all log output
+    silentLogger := logs.NewLogger(logs.None, true)
+    silentLogger.Info("This will not be printed")
+
     // Log messages at different levels
     logger.Debug("This debug message won't be shown because minimum level is INFO")
     logger.Info("System started successfully")
@@ -52,6 +56,9 @@ logger := logs.NewLogger(logs.Info, true)
 
 // Later change to DEBUG level
 logger.SetLogLevel(logs.Debug)
+
+// Disable all log output
+logger.SetLogLevel(logs.None)
 
 // Get current log level
 currentLevel := logger.GetLogLevel()
